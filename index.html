@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SplitEase - Bill Splitter</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .result-card {
+            transition: 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-3px);
+        }
+
+        input:focus {
+            outline: none;
+        }
+    </style>
+</head>
+
+<body class="bg-stone-100 text-stone-800 min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white border-b border-stone-200">
+        <div class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
+
+            <div>
+                <h1 class="text-2xl font-bold text-emerald-700">
+                    SplitEase
+                </h1>
+
+                <p class="text-xs text-stone-500">
+                    Simple Bill Splitting
+                </p>
+            </div>
+
+            <div class="hidden sm:block text-sm text-stone-500">
+                Eat together. Pay fairly.
+            </div>
+
+        </div>
+    </nav>
+
+
+    <!-- Hero -->
+    <section class="bg-emerald-700 text-white">
+
+        <div class="max-w-6xl mx-auto px-6 py-14">
+
+            <div class="max-w-2xl">
+
+                <p class="uppercase tracking-widest text-sm text-emerald-200 font-semibold">
+                    Smart & Simple
+                </p>
+
+                <h2 class="text-4xl md:text-5xl font-bold mt-3">
+                    Split your bill without the confusion.
+                </h2>
+
+                <p class="mt-5 text-emerald-100 leading-7">
+                    Enter your restaurant bill, choose the number of people,
+                    add tax and tip, and instantly find out how much everyone
+                    needs to pay.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Main App -->
+    <main class="max-w-6xl mx-auto px-6 py-12">
+
+        <div class="grid lg:grid-cols-2 gap-8">
+
+            <!-- Input Card -->
+            <div class="bg-white rounded-3xl shadow-sm border border-stone-200 p-7">
+
+                <div class="mb-8">
+
+                    <p class="text-emerald-600 uppercase tracking-widest text-xs font-bold">
+                        Bill Details
+                    </p>
+
+                    <h3 class="text-2xl font-bold mt-2">
+                        Enter your details
+                    </h3>
+
+                    <p class="text-stone-500 text-sm mt-2">
+                        Fill in the information below to calculate the split.
+                    </p>
+
+                </div>
+
+
+                <!-- Bill Amount -->
+                <div class="mb-6">
+
+                    <label class="block text-sm font-semibold mb-2">
+                        Bill Amount
+                    </label>
+
+                    <div class="relative">
+
+                        <span class="absolute left-4 top-3.5 text-stone-500 font-semibold">
+                            ₹
+                        </span>
+
+                        <input
+                            type="number"
+                            id="billAmount"
+                            placeholder="0.00"
+                            min="0"
+                            class="w-full border border-stone-300 rounded-xl py-3 pl-10 pr-4 text-lg"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- People -->
+                <div class="mb-6">
+
+                    <label class="block text-sm font-semibold mb-2">
+                        Number of People
+                    </label>
+
+                    <div class="flex items-center border border-stone-300 rounded-xl overflow-hidden">
+
+                        <button
+                            onclick="changePeople(-1)"
+                            class="w-14 h-12 bg-stone-100 text-xl hover:bg-stone-200">
+                            −
+                        </button>
+
+                        <input
+                            type="number"
+                            id="people"
+                            value="2"
+                            min="1"
+                            class="w-full text-center text-lg font-semibold h-12"
+                        >
+
+                        <button
+                            onclick="changePeople(1)"
+                            class="w-14 h-12 bg-stone-100 text-xl hover:bg-stone-200">
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Tip -->
+                <div class="mb-6">
+
+                    <div class="flex justify-between items-center mb-2">
+
+                        <label class="text-sm font-semibold">
+                            Tip
+                        </label>
+
+                        <span
+                            id="tipDisplay"
+                            class="text-emerald-700 font-semibold">
+                            10%
+                        </span>
+
+                    </div>
+
+
+                    <input
+                        type="range"
+                        id="tip"
+                        min="0"
+                        max="30"
+                        value="10"
+                        class="w-full accent-emerald-600"
+                    >
+
+
+                    <div class="flex justify-between text-xs text-stone-400 mt-2">
+                        <span>0%</span>
+                        <span>15%</span>
+                        <span>30%</span>
+                    </div>
+
+
+                    <!-- Quick Tip -->
+                    <div class="flex gap-2 mt-4">
+
+                        <button
+                            onclick="setTip(0)"
+                            class="tip-btn px-4 py-2 rounded-lg bg-stone-100 text-sm hover:bg-emerald-100">
+                            0%
+                        </button>
+
+                        <button
+                            onclick="setTip(10)"
+                            class="tip-btn px-4 py-2 rounded-lg bg-stone-100 text-sm hover:bg-emerald-100">
+                            10%
+                        </button>
+
+                        <button
+                            onclick="setTip(15)"
+                            class="tip-btn px-4 py-2 rounded-lg bg-stone-100 text-sm hover:bg-emerald-100">
+                            15%
+                        </button>
+
+                        <button
+                            onclick="setTip(20)"
+                            class="tip-btn px-4 py-2 rounded-lg bg-stone-100 text-sm hover:bg-emerald-100">
+                            20%
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Tax -->
+                <div class="mb-8">
+
+                    <label class="block text-sm font-semibold mb-2">
+                        Tax
+                    </label>
+
+                    <select
+                        id="tax"
+                        class="w-full border border-stone-300 rounded-xl px-4 py-3 bg-white">
+
+                        <option value="0">No Tax</option>
+                        <option value="5">5%</option>
+                        <option value="10">10%</option>
+                        <option value="12">12%</option>
+                        <option value="18">18%</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="grid grid-cols-2 gap-4">
+
+                    <button
+                        onclick="calculateBill()"
+                        class="bg-emerald-600 text-white py-3 rounded-xl font-semibold hover:bg-emerald-700">
+                        Calculate
+                    </button>
+
+                    <button
+                        onclick="resetBill()"
+                        class="border border-stone-300 py-3 rounded-xl font-semibold hover:bg-stone-100">
+                        Reset
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Result Card -->
+            <div class="bg-stone-900 text-white rounded-3xl shadow-sm p-7">
+
+                <div class="mb-8">
+
+                    <p class="text-emerald-400 uppercase tracking-widest text-xs font-bold">
+                        Your Result
+                    </p>
+
+                    <h3 class="text-2xl font-bold mt-2">
+                        Bill Summary
+                    </h3>
+
+                    <p class="text-stone-400 text-sm mt-2">
+                        Here's how your bill is divided.
+                    </p>
+
+                </div>
+
+
+                <!-- Total -->
+                <div class="bg-stone-800 rounded-2xl p-6 mb-5">
+
+                    <p class="text-stone-400 text-sm">
+                        Total Bill
+                    </p>
+
+                    <h4
+                        id="totalBill"
+                        class="text-4xl font-bold mt-2">
+                        ₹0.00
+                    </h4>
+
+                </div>
+
+
+                <!-- Details -->
+                <div class="space-y-4">
+
+                    <div class="result-card flex justify-between bg-stone-800 p-4 rounded-xl">
+
+                        <span class="text-stone-400">
+                            Original Bill
+                        </span>
+
+                        <span id="originalBill" class="font-semibold">
+                            ₹0.00
+                        </span>
+
+                    </div>
+
+
+                    <div class="result-card flex justify-between bg-stone-800 p-4 rounded-xl">
+
+                        <span class="text-stone-400">
+                            Tax
+                        </span>
+
+                        <span id="taxAmount" class="font-semibold">
+                            ₹0.00
+                        </span>
+
+                    </div>
+
+
+                    <div class="result-card flex justify-between bg-stone-800 p-4 rounded-xl">
+
+                        <span class="text-stone-400">
+                            Tip
+                        </span>
+
+                        <span id="tipAmount" class="font-semibold">
+                            ₹0.00
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Per Person -->
+                <div class="mt-6 bg-emerald-600 rounded-2xl p-6">
+
+                    <div class="flex justify-between items-center">
+
+                        <div>
+
+                            <p class="text-emerald-100 text-sm">
+                                Each Person Pays
+                            </p>
+
+                            <h4
+                                id="perPerson"
+                                class="text-4xl font-bold mt-1">
+                                ₹0.00
+                            </h4>
+
+                        </div>
+
+                        <div class="text-4xl">
+                            👥
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- People Message -->
+                <p
+                    id="peopleMessage"
+                    class="text-center text-stone-400 text-sm mt-6">
+                    Enter your bill details to get started.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- How It Works -->
+        <section class="mt-16">
+
+            <div class="text-center mb-10">
+
+                <p class="text-emerald-600 uppercase tracking-widest text-xs font-bold">
+                    How It Works
+                </p>
+
+                <h2 class="text-3xl font-bold mt-2">
+                    Split your bill in 3 simple steps
+                </h2>
+
+            </div>
+
+
+            <div class="grid md:grid-cols-3 gap-6">
+
+                <div class="bg-white rounded-2xl p-7 border border-stone-200">
+
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-lg">
+                        1
+                    </div>
+
+                    <h3 class="text-xl font-bold mt-5">
+                        Enter the Bill
+                    </h3>
+
+                    <p class="text-stone-500 mt-3 leading-6">
+                        Add the total amount from your restaurant or café bill.
+                    </p>
+
+                </div>
+
+
+                <div class="bg-white rounded-2xl p-7 border border-stone-200">
+
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-lg">
+                        2
+                    </div>
+
+                    <h3 class="text-xl font-bold mt-5">
+                        Add Details
+                    </h3>
+
+                    <p class="text-stone-500 mt-3 leading-6">
+                        Choose the number of people and add the tip and tax.
+                    </p>
+
+                </div>
+
+
+                <div class="bg-white rounded-2xl p-7 border border-stone-200">
+
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-lg">
+                        3
+                    </div>
+
+                    <h3 class="text-xl font-bold mt-5">
+                        Split & Pay
+                    </h3>
+
+                    <p class="text-stone-500 mt-3 leading-6">
+                        Instantly see the total and how much each person needs to pay.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Tips Section -->
+        <section class="mt-16 bg-emerald-50 rounded-3xl p-8 md:p-12">
+
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+
+                <div>
+
+                    <p class="text-emerald-600 uppercase tracking-widest text-xs font-bold">
+                        Smart Splitting
+                    </p>
+
+                    <h2 class="text-3xl font-bold mt-3">
+                        Make group dinners easier.
+                    </h2>
+
+                    <p class="text-stone-600 mt-5 leading-7">
+                        Whether you're having dinner with friends, sharing
+                        a café bill or organizing a group meal, SplitEase
+                        helps everyone understand exactly what they need to pay.
+                    </p>
+
+                </div>
+
+
+                <div class="grid grid-cols-2 gap-4">
+
+                    <div class="bg-white p-5 rounded-2xl">
+                        <p class="text-3xl font-bold text-emerald-700">
+                            ₹
+                        </p>
+
+                        <p class="font-semibold mt-3">
+                            Fair Split
+                        </p>
+
+                        <p class="text-sm text-stone-500 mt-1">
+                            Divide the total equally.
+                        </p>
+                    </div>
+
+
+                    <div class="bg-white p-5 rounded-2xl">
+                        <p class="text-3xl font-bold text-emerald-700">
+                            %
+                        </p>
+
+                        <p class="font-semibold mt-3">
+                            Easy Tips
+                        </p>
+
+                        <p class="text-sm text-stone-500 mt-1">
+                            Choose your preferred tip.
+                        </p>
+                    </div>
+
+
+                    <div class="bg-white p-5 rounded-2xl">
+                        <p class="text-3xl font-bold text-emerald-700">
+                            +
+                        </p>
+
+                        <p class="font-semibold mt-3">
+                            Tax Included
+                        </p>
+
+                        <p class="text-sm text-stone-500 mt-1">
+                            Add tax automatically.
+                        </p>
+                    </div>
+
+
+                    <div class="bg-white p-5 rounded-2xl">
+                        <p class="text-3xl font-bold text-emerald-700">
+                            ✓
+                        </p>
+
+                        <p class="font-semibold mt-3">
+                            Instant Result
+                        </p>
+
+                        <p class="text-sm text-stone-500 mt-1">
+                            See your share instantly.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 text-center py-8 mt-10">
+
+        <h3 class="text-white font-bold text-lg">
+            SplitEase
+        </h3>
+
+        <p class="text-sm mt-2">
+            A simple bill splitting calculator.
+        </p>
+
+        <p class="text-xs mt-4">
+            © 2026 SplitEase. Built with HTML, Tailwind CSS & JavaScript.
+        </p>
+
+    </footer>
+
+
+    <script>
+
+        const billAmount = document.getElementById("billAmount");
+        const people = document.getElementById("people");
+        const tip = document.getElementById("tip");
+        const tax = document.getElementById("tax");
+
+        const tipDisplay = document.getElementById("tipDisplay");
+
+        const totalBill = document.getElementById("totalBill");
+        const originalBill = document.getElementById("originalBill");
+        const taxAmount = document.getElementById("taxAmount");
+        const tipAmount = document.getElementById("tipAmount");
+        const perPerson = document.getElementById("perPerson");
+        const peopleMessage = document.getElementById("peopleMessage");
+
+
+        // Update tip percentage
+        tip.addEventListener("input", function () {
+
+            tipDisplay.textContent = tip.value + "%";
+
+            calculateBill();
+
+        });
+
+
+        // Change number of people
+        function changePeople(amount) {
+
+            let currentPeople = parseInt(people.value) || 1;
+
+            currentPeople += amount;
+
+            if (currentPeople < 1) {
+                currentPeople = 1;
+            }
+
+            people.value = currentPeople;
+
+            calculateBill();
+
+        }
+
+
+        // Quick tip buttons
+        function setTip(value) {
+
+            tip.value = value;
+
+            tipDisplay.textContent = value + "%";
+
+            calculateBill();
+
+        }
+
+
+        // Calculate bill
+        function calculateBill() {
+
+            let bill = parseFloat(billAmount.value) || 0;
+
+            let numberOfPeople = parseInt(people.value) || 1;
+
+            let tipPercentage = parseFloat(tip.value) || 0;
+
+            let taxPercentage = parseFloat(tax.value) || 0;
+
+
+            // Calculate tax
+            let taxValue = bill * (taxPercentage / 100);
+
+
+            // Calculate tip
+            let tipValue = bill * (tipPercentage / 100);
+
+
+            // Calculate total
+            let total = bill + taxValue + tipValue;
+
+
+            // Calculate individual amount
+            let individualAmount = total / numberOfPeople;
+
+
+            // Display values
+            originalBill.textContent =
+                "₹" + bill.toFixed(2);
+
+            taxAmount.textContent =
+                "₹" + taxValue.toFixed(2);
+
+            tipAmount.textContent =
+                "₹" + tipValue.toFixed(2);
+
+            totalBill.textContent =
+                "₹" + total.toFixed(2);
+
+            perPerson.textContent =
+                "₹" + individualAmount.toFixed(2);
+
+
+            if (bill > 0) {
+
+                peopleMessage.textContent =
+                    numberOfPeople +
+                    " people will each pay ₹" +
+                    individualAmount.toFixed(2);
+
+            } else {
+
+                peopleMessage.textContent =
+                    "Enter your bill details to get started.";
+
+            }
+
+        }
+
+
+        // Reset
+        function resetBill() {
+
+            billAmount.value = "";
+
+            people.value = 2;
+
+            tip.value = 10;
+
+            tax.value = 0;
+
+            tipDisplay.textContent = "10%";
+
+
+            originalBill.textContent = "₹0.00";
+
+            taxAmount.textContent = "₹0.00";
+
+            tipAmount.textContent = "₹0.00";
+
+            totalBill.textContent = "₹0.00";
+
+            perPerson.textContent = "₹0.00";
+
+            peopleMessage.textContent =
+                "Enter your bill details to get started.";
+
+        }
+
+
+        // Calculate when inputs change
+        billAmount.addEventListener("input", calculateBill);
+
+        people.addEventListener("input", calculateBill);
+
+        tax.addEventListener("change", calculateBill);
+
+
+    </script>
+
+</body>
+</html>
